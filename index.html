@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Networking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        /* Gradient background */
+        body {
+            margin: 0;
+            font-family: 'Roboto Mono', monospace;
+            background: linear-gradient(135deg, #121212, #003300);
+            color: white;
+            text-align: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Banner with glowing text */
+        .banner {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px green;
+            border: 2px solid green;
+            text-shadow: 0 0 10px green;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 15px green;
+            }
+            to {
+                box-shadow: 0 0 25px #00ff00;
+            }
+        }
+
+        /* Subtext styling */
+        .subtext {
+            font-size: 18px;
+            color: white;
+            margin-top: 20px;
+            text-shadow: 0 0 10px green;
+            animation: fadeIn 2s ease-in;
+        }
+
+        /* Menu buttons with hover effects */
+        .menu {
+            margin-top: 40px;
+            animation: slideIn 1s ease-out;
+        }
+
+        .menu button {
+            background-color: #333;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px 30px;
+            border: 2px solid green;
+            border-radius: 10px;
+            margin: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px #999;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .menu button:hover {
+            background-color: green;
+            box-shadow: 0 8px #666;
+            transform: translateY(-4px);
+        }
+
+        .menu button:active {
+            background-color: #00cc00;
+            box-shadow: 0 2px #666;
+            transform: translateY(2px);
+        }
+
+        /* Input container */
+        .input-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .input-container input {
+            padding: 12px 20px;
+            font-size: 18px;
+            margin-right: 10px;
+            border-radius: 10px;
+            border: 2px solid green;
+            background-color: #1e1e1e;
+            color: white;
+            margin-bottom: 20px;
+            width: 300px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .input-container input:focus {
+            border-color: #00cc00;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .input-container button {
+            background-color: #333;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 2px solid green;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px #999;
+        }
+
+        .input-container button:hover {
+            background-color: green;
+            box-shadow: 0 8px #666;
+            transform: translateY(-4px);
+        }
+
+        .input-container button:active {
+            background-color: #00cc00;
+            box-shadow: 0 2px #666;
+            transform: translateY(2px);
+        }
+
+        /* Output Box for displaying results */
+        .output {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: white;
+            text-align: left;
+            display: none;
+            width: 320px;
+            margin: 20px auto;
+            border: 2px solid green;
+            box-shadow: 0 0 15px green;
+            transition: all 0.3s ease;
+            animation: glow 2s infinite alternate;
+        }
+
+        .output p {
+            margin: 10px 0;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #00ff00;
+            text-shadow: 0 0 5px green;
+        }
+
+        .output strong {
+            color: white;
+            text-shadow: 0 0 5px white;
+        }
+
+        /* Wi-Fi List Container */
+        .wifi-list {
+            margin-top: 20px;
+            text-align: left;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .wifi-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .wifi-list li {
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid green;
+            box-shadow: 0 0 5px green;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .wifi-list li:hover {
+            background-color: rgba(51, 51, 51, 0.8);
+            box-shadow: 0 0 10px green;
+            transform: scale(1.02);
+        }
+
+        /* Device List Container */
+        .device-list {
+            margin-top: 20px;
+            text-align: left;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .device-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .device-list li {
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid green;
+            box-shadow: 0 0 5px green;
+            transition: all 0.3s ease;
+        }
+
+        .device-list li:hover {
+            background-color: rgba(51, 51, 51, 0.8);
+            box-shadow: 0 0 10px green;
+            transform: scale(1.02);
+        }
+
+        /* DDOS Menu Styling */
+        .ddos-menu {
+            margin-top: 30px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .ddos-menu input {
+            padding: 12px 20px;
+            font-size: 18px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 2px solid green;
+            background-color: #1e1e1e;
+            color: white;
+            width: 300px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .ddos-menu input:focus {
+            border-color: #00cc00;
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .ddos-menu button {
+            background-color: #333;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 2px solid green;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px #999;
+        }
+
+        .ddos-menu button:hover {
+            background-color: green;
+            box-shadow: 0 8px #666;
+            transform: translateY(-4px);
+        }
+
+        .ddos-menu button:active {
+            background-color: #00cc00;
+            box-shadow: 0 2px #666;
+            transform: translateY(2px);
+        }
+
+        /* Cookie and Cache Permission Prompt */
+        .permission-prompt {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid green;
+            box-shadow: 0 0 15px green;
+            text-align: center;
+            z-index: 1000;
+            display: none;
+            animation: slideIn 1s ease-out;
+        }
+
+        .permission-prompt p {
+            margin: 0 0 15px;
+            font-size: 16px;
+            color: white;
+        }
+
+        .permission-prompt button {
+            background-color: #333;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: 2px solid green;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+        }
+
+        .permission-prompt button:hover {
+            background-color: green;
+            box-shadow: 0 0 10px green;
+        }
+
+        .permission-prompt button:active {
+            background-color: #00cc00;
+            box-shadow: 0 0 5px green;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 1s ease-in 2s forwards;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #00ff00;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading animation -->
+    <div class="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Cookie and Cache Permission Prompt -->
+    <div class="permission-prompt" id="permission-prompt">
+        <p>This website uses cookies and caching to improve your experience. Do you agree to enable them?</p>
+        <button onclick="acceptCookiesAndCache()">Accept</button>
+        <button onclick="declineCookiesAndCache()">Decline</button>
+    </div>
+
+    <div class="banner">
+        Networking By Azariah Anderson
+    </div>
+    <div class="subtext">
+        Their Information Is Yours Too!
+    </div>
+
+    <div class="menu">
+        <button onclick="findUsersOnNetwork()">Find Your Ip</button>
+        <button onclick="showIpForm()">Find Website with IP</button>
+        <button onclick="showDdosMenu()">DDOS</button>
+        <button onclick="downloadMultiTool()">Download Multi-Tool</button>
+    </div>
+
+    <!-- IP Finder Form -->
+    <div class="input-container" id="ip-form" style="display: none;">
+        <input type="text" id="website-url" placeholder="Enter Website URL (e.g. google.com)" />
+        <button onclick="findWebsiteIp()">Find IP</button>
+    </div>
+
+    <!-- Output Container for IP Results -->
+    <div class="output" id="output">
+        <p><strong>IP Address:</strong> <span id="ip-address"></span></p>
+        <p><strong>Host Name:</strong> <span id="host-name"></span></p>
+        <p><strong>Location:</strong> <span id="location"></span></p>
+        <p><strong>Organization:</strong> <span id="organization"></span></p>
+        <p><strong>Country:</strong> <span id="country"></span></p>
+        <p><strong>Region:</strong> <span id="region"></span></p>
+        <p><strong>City:</strong> <span id="city"></span></p>
+    </div>
+
+    <!-- Wi-Fi List Container -->
+    <div class="output wifi-list" id="wifi-list" style="display: none;">
+        <h3>Your Info!</h3>
+        <ul id="wifi-networks">
+            <!-- Wi-Fi networks will be listed here -->
+        </ul>
+    </div>
+
+    <!-- Device List Container -->
+    <div class="output device-list" id="device-list" style="display: none;">
+        <h3>Devices on Selected Network</h3>
+        <ul id="devices">
+            <!-- Devices will be listed here -->
+        </ul>
+    </div>
+
+    <!-- DDOS Menu -->
+    <div class="ddos-menu" id="ddos-menu">
+        <input type="text" id="ddos-ip" placeholder="Enter Target IP Address" />
+        <input type="number" id="ddos-packets" placeholder="Enter Number of Packets" />
+        <button onclick="simulateDdos()">Launch Attack</button>
+    </div>
+
+    <script>
+        // Show the cookie and cache permission prompt when the page loads
+        window.onload = function () {
+            const permissionPrompt = document.getElementById('permission-prompt');
+            if (!localStorage.getItem('cookiesAccepted')) {
+                permissionPrompt.style.display = 'block';
+            }
+        };
+
+        // Function to handle acceptance of cookies and caching
+        function acceptCookiesAndCache() {
+            alert("Cookies and caching enabled. Thank you for your consent!");
+            document.getElementById('permission-prompt').style.display = 'none';
+            localStorage.setItem('cookiesAccepted', 'true');
+        }
+
+        // Function to handle rejection of cookies and caching
+        function declineCookiesAndCache() {
+            alert("Cookies and caching disabled. Some features may not work as expected.");
+            document.getElementById('permission-prompt').style.display = 'none';
+            localStorage.setItem('cookiesAccepted', 'false');
+        }
+
+        // Function to show/hide the IP form
+        function showIpForm() {
+            const ipForm = document.getElementById('ip-form');
+            const wifiList = document.getElementById('wifi-list');
+            const deviceList = document.getElementById('device-list');
+            const ddosMenu = document.getElementById('ddos-menu');
+            const output = document.getElementById('output');
+
+            // Toggle the IP form
+            if (ipForm.style.display === 'none' || ipForm.style.display === '') {
+                ipForm.style.display = 'flex';
+                wifiList.style.display = 'none';
+                deviceList.style.display = 'none';
+                ddosMenu.style.display = 'none';
+                output.style.display = 'none'; // Hide IP output if visible
+            } else {
+                ipForm.style.display = 'none';
+            }
+        }
+
+        // Function to find the website IP and display real geolocation data
+        async function findWebsiteIp() {
+            const websiteUrl = document.getElementById('website-url').value;
+            if (websiteUrl) {
+                try {
+                    // Fetch the IP address of the website
+                    const ipResponse = await fetch(`https://dns.google/resolve?name=${websiteUrl}&type=A`);
+                    const ipData = await ipResponse.json();
+                    const ipAddress = ipData.Answer?.[0]?.data;
+
+                    if (!ipAddress) {
+                        throw new Error('Unable to resolve IP address for the provided URL.');
+                    }
+
+                    // Fetch geolocation data using ipinfo.io
+                    const apiKey = '3555b925df3728'; // Your ipinfo.io API key
+                    const locationResponse = await fetch(`https://ipinfo.io/${ipAddress}?token=${apiKey}`);
+                    const locationData = await locationResponse.json();
+
+                    // Display the results
+                    const output = document.getElementById('output');
+                    output.style.display = 'block';
+                    document.getElementById('ip-address').textContent = ipAddress;
+                    document.getElementById('host-name').textContent = websiteUrl;
+                    document.getElementById('location').textContent = `${locationData.city}, ${locationData.region}, ${locationData.country}`;
+                    document.getElementById('organization').textContent = locationData.org || 'N/A';
+                    document.getElementById('country').textContent = locationData.country || 'N/A';
+                    document.getElementById('region').textContent = locationData.region || 'N/A';
+                    document.getElementById('city').textContent = locationData.city || 'N/A';
+
+                    // Hide other outputs
+                    document.getElementById('wifi-list').style.display = 'none';
+                    document.getElementById('device-list').style.display = 'none';
+                } catch (error) {
+                    console.error('Error fetching IP or location:', error);
+                    alert('Unable to fetch IP or location details. Please check the URL and try again.');
+                }
+            } else {
+                alert('Please enter a valid website URL.');
+            }
+        }
+
+        // Function to show/hide the DDOS menu
+        function showDdosMenu() {
+            const ddosMenu = document.getElementById('ddos-menu');
+            const ipForm = document.getElementById('ip-form');
+            const wifiList = document.getElementById('wifi-list');
+            const deviceList = document.getElementById('device-list');
+            const output = document.getElementById('output');
+
+            // Toggle the DDOS menu
+            if (ddosMenu.style.display === 'none' || ddosMenu.style.display === '') {
+                ddosMenu.style.display = 'flex';
+                ipForm.style.display = 'none';
+                wifiList.style.display = 'none';
+                deviceList.style.display = 'none';
+                output.style.display = 'none'; // Hide IP output if visible
+            } else {
+                ddosMenu.style.display = 'none';
+            }
+        }
+
+        // Function to simulate a DDOS attack
+        function simulateDdos() {
+            const ip = document.getElementById('ddos-ip').value;
+            const packets = document.getElementById('ddos-packets').value;
+            if (ip && packets) {
+                alert(`Simulating DDOS attack on ${ip} with ${packets} packets.`);
+            } else {
+                alert('Please enter a valid IP address and number of packets.');
+            }
+        }
+
+        // Function to find users on the network (now shows user's IP and location)
+        function findUsersOnNetwork() {
+            const wifiList = document.getElementById('wifi-list');
+            const ipForm = document.getElementById('ip-form');
+            const deviceList = document.getElementById('device-list');
+            const ddosMenu = document.getElementById('ddos-menu');
+            const output = document.getElementById('output');
+
+            // Toggle the Wi-Fi list
+            if (wifiList.style.display === 'none' || wifiList.style.display === '') {
+                wifiList.style.display = 'block';
+                ipForm.style.display = 'none';
+                deviceList.style.display = 'none';
+                ddosMenu.style.display = 'none';
+                output.style.display = 'none'; // Hide IP output if visible
+
+                // Fetch the user's IP and location
+                fetchUserIpAndLocation();
+            } else {
+                wifiList.style.display = 'none';
+            }
+        }
+
+        // Function to fetch the user's IP and location
+        async function fetchUserIpAndLocation() {
+            try {
+                // Fetch the user's IP address
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const userIp = ipData.ip;
+
+                // Fetch location details using the IP
+                const locationResponse = await fetch(`https://ipapi.co/${userIp}/json/`);
+                const locationData = await locationResponse.json();
+
+                // Display the results in the Wi-Fi list container
+                const wifiNetworks = document.getElementById('wifi-networks');
+                wifiNetworks.innerHTML = `
+                    <li><strong>Your IP Address:</strong> ${userIp}</li>
+                    <li><strong>City:</strong> ${locationData.city}</li>
+                    <li><strong>Region:</strong> ${locationData.region}</li>
+                    <li><strong>Country:</strong> ${locationData.country_name}</li>
+                    <li><strong>Postal Code:</strong> ${locationData.postal}</li>
+                    <li><strong>ISP:</strong> ${locationData.org}</li>
+                `;
+            } catch (error) {
+                console.error('Error fetching IP or location:', error);
+                const wifiNetworks = document.getElementById('wifi-networks');
+                wifiNetworks.innerHTML = '<li>Unable to fetch your IP or location. Please try again later.</li>';
+            }
+        }
+
+        // Function to download the Multi-Tool.bat file from GoogleDrive
+        function downloadMultiTool() {
+            // Replace this URL with the direct download link from MediaFire
+            const downloadUrl = 'https://drive.google.com/file/d/1LObrbJn4dYYT0KvLXfRPhYN_9hzf3w9Z/view?usp=drive_link';
+            window.open(downloadUrl, '_blank'); // Open the download link in a new tab
+        }
+    </script>
+
+</body>
+</html>
